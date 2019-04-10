@@ -1,0 +1,21 @@
+.auth-logo {
+  /* margin: 5% 0% */
+}
+
+.auth-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-form {
+  width: 35%;
+  background-color: #f9f9f9 !important;
+  -webkit-box-shadow: 10px 10px 81px -20px rgba(0, 0, 0, 1);
+  -moz-box-shadow: 10px 10px 81px -20px rgba(0, 0, 0, 1);
+  box-shadow: 10px 10px 81px -20px rgba(0, 0, 0, 1);
+}
+
+.ant-card-head {
+  border-bottom: 0px !important;
+}

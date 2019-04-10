@@ -1,0 +1,18 @@
+.access-logo {
+  /* margin: 5% 0% */
+}
+
+.access-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.access-form {
+  /* width: 30%; */
+}
+
+.ant-card-head {
+  border-bottom: 0px !important;
+}

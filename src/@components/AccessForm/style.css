@@ -1,0 +1,61 @@
+h3:before {
+  content: attr(data-text);
+  position: absolute;
+  overflow: hidden;
+  max-width: 7em;
+  white-space: nowrap;
+  color: #12bb12;
+  animation: loading 3s linear;
+}
+@keyframes loading {
+  0% {
+      max-width: 0;
+  }
+}
+
+.ant-input {
+  height: 45px !important;
+  font-size: 18px !important;
+  line-height: 1.5 !important;
+  border: 0px !important;
+  border-radius: 20px !important;
+}
+
+.ant-form-item-with-help {
+  margin-bottom: 15px !important;
+}
+
+.ant-form-explain {
+  margin-top: 5px !important;
+}
+
+.ant-btn-primary {
+  background-color: #00b600 !important;
+  border-color: #00b600 !important;
+}
+
+.ant-btn-primary:hover {
+  background-color: #00a000 !important;
+  border-color: #00a000 !important;
+}
+
+.ant-btn {
+  border-radius: 20px !important;
+}
+
+.ant-input-prefix {
+  font-size: 20px !important;
+}
+
+.ant-input-affix-wrapper .ant-input:not(:first-child) {
+  padding-left: 40px !important;
+}
+
+.ant-modal-confirm-btns {
+  text-align: center !important;
+  float: none !important;
+}
+
+.ant-modal-confirm-btns .ant-btn {
+  padding: 0 35px !important
+}

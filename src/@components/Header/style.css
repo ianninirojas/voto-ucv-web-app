@@ -1,0 +1,16 @@
+.logo img {
+  width: 60px
+}
+
+.ant-layout-header {
+  height: 84px !important;
+  padding: 0 50px !important;
+  line-height: 84px !important;
+  background: #001529 !important;
+}
+
+.ant-layout-header span {
+  font-size: 20px !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+}
