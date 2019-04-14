@@ -49,7 +49,7 @@ class Ballot extends Component {
         this.setState({ electoralEvent, loadingElectoralEvent: false });
       })
       .catch(error => {
-
+        console.log('error :', error);
       })
   }
 

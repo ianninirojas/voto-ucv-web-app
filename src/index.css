@@ -33,6 +33,10 @@ code {
   text-align: center
 }
 
-.ant-spin-container > .ant-row {
+.ant-spin-container>.ant-row {
   margin: 0px !important
+}
+
+.all-height {
+  height: 100% !important;
 }

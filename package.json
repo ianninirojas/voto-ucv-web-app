@@ -18,10 +18,17 @@
     "react-scripts": "2.1.8"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "start-prod": "firebase use default && cross-env REACT_APP_ENV=\"production\" npm run start",
+    "build-prod": "cross-env REACT_APP_ENV=\"production\" react-scripts build",
+    "deploy-prod": "npm run build-prod && firebase use default && firebase deploy",
+    "deploy-prod-hosting": "npm run build-prod && firebase use default && firebase deploy --only hosting",
+    "start-dev": "firebase use default && cross-env REACT_APP_ENV=\"development\" npm run start",
+    "build-dev": "cross-env REACT_APP_ENV=\"development\" react-scripts build",
+    "deploy-dev": "npm run build-dev && firebase use default && firebase deploy",
+    "deploy-dev-hosting": "npm run build-dev && firebase use default && firebase deploy --only hosting",
+    "start": "cross-env-shell react-scripts start"
   },
   "eslintConfig": {
     "extends": "react-app"
