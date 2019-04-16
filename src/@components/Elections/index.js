@@ -276,6 +276,7 @@ class Elections extends Component {
                     </List.Item>
                   )}
                 />
+                <br />
                 <div className='text-center'>
                   <Button
                     type='primary'

@@ -21,7 +21,7 @@ class Access extends Component {
             xl={24}
           >
             <br /><br />
-            <div className='text-center access-logo'>
+            <div className='text-center access-logo' style={{ paddingTop: '100px' }}>
               <img src={logo} alt="Logo" width='150px' />
             </div>
             <br /><br />

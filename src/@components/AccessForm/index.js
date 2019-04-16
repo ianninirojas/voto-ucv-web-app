@@ -220,7 +220,7 @@ class Access extends Component {
         {this.state.showForm ? (
           <RenderForm />
         ) : (
-            <div className='text-center'>
+            <div className='text-center' style={{ paddingTop: '50px' }}>
               <ProgressValidation />
             </div>
           )}

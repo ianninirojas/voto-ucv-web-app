@@ -113,6 +113,7 @@ class CandidateUninominal extends Component {
             SELECCIONAR
           </Button>
         </div>
+        <br /><br /><br />
       </div>
     );
   }

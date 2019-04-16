@@ -108,7 +108,7 @@ class CandidatesList extends Component {
 
     const unselectedPositions = positions.map(position => {
       if (!selectedCandidates.find(candidate => candidate.position === position)) {
-        return <li style={{color:'#ff0000'}} key={position}><strong>{position}</strong>: NO SELECCIONADO</li>
+        return <li style={{ color: '#ff0000' }} key={position}><strong>{position}</strong>: NO SELECCIONADO</li>
       }
     })
 
@@ -116,7 +116,7 @@ class CandidatesList extends Component {
 
     const _this = this;
     confirm({
-      width:'500px',
+      width: '500px',
       title: '¿Esta seguro de seleccionar estos candidatos?',
       content: <ul> {candidatesName.map(candidate => candidate)}</ul >,
       okText: 'CONFIRMAR',
@@ -151,6 +151,7 @@ class CandidatesList extends Component {
             SELECCIONAR
           </Button>
         </div>
+        <br /><br /><br />
       </div>
     );
   }

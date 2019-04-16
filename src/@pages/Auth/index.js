@@ -11,8 +11,8 @@ class Auth extends Component {
 
   render() {
     return (
-      <div >
-        <Row style={{ background: 'linear-gradient(-135deg, #083c4a, #096dd9)', paddingBottom: '5%' }}>
+      <div className='all-height'>
+        <Row className='all-height' style={{ background: 'linear-gradient(-135deg, #083c4a, #096dd9)' }}>
           <Col
             xs={24}
             sm={24}
@@ -20,12 +20,11 @@ class Auth extends Component {
             lg={24}
             xl={24}
           >
-            <br /><br />
-            <div className='text-center access-logo'>
+            <div className='text-center access-logo' style={{ paddingTop: '100px' }}>
               <img src={logo} alt="Logo" width='150px' />
             </div>
             <br />
-            <div className='auth-box'>
+            <div className='auth-box' style={{ paddingTop: '50px' }}>
               <AuthForm history={this.props.history} {...this.props} />
             </div>
           </Col>

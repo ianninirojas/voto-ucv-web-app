@@ -2,8 +2,8 @@
 
 // }
 
-const dev = {
-  apiUrl: 'http://localhost:3002'
+const dev = {  
+  apiUrl: 'https://d568c79a.ngrok.io'
 }
 
 // falta agregar los tipos de ambients
