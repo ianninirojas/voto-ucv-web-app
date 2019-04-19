@@ -29,6 +29,7 @@ class Ballot extends Component {
       },
       loadingElectoralEvent: true
     }
+    this.CountdownRef = React.createRef();
   }
 
   componentDidMount = () => {
@@ -62,6 +63,20 @@ class Ballot extends Component {
     }
   };
 
+  controlledCountdown = (option) => {
+    switch (option) {
+      case 1:
+        this.CountdownRef.current.start();
+        break;
+      case 2:
+        this.CountdownRef.current.pause();
+        break;
+
+      default:
+        break;
+    }
+  }
+
   render() {
     return (
       <div >
@@ -92,12 +107,17 @@ class Ballot extends Component {
                 <Countdown
                   date={Date.now() + 600000}
                   renderer={this.timeCountdown}
+                  ref={this.CountdownRef}
                 />
               </Col>
 
 
             </Row>
-            <Elections electoralEventPublickey={this.state.electoralEventPublickey} elections={this.props.location.state.elections} />
+            <Elections
+              electoralEventPublickey={this.state.electoralEventPublickey}
+              elections={this.props.location.state.elections}
+              controlledCountdown={this.controlledCountdown}
+            />
           </div>
         )}
       </div>

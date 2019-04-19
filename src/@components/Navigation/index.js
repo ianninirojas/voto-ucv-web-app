@@ -13,6 +13,7 @@ import {
   Ballot,
   Timeout,
   ElectoralEvents,
+  VoteSuccess,
 } from '../../@pages';
 import { Footer } from '../Footer';
 
@@ -27,6 +28,7 @@ class Navigation extends Component {
           <Route path={pathRoutes.BALLOT} component={Ballot} exact />
           <Route path={pathRoutes.RESULT} component={Result} exact />
           <Route path={pathRoutes.TIMEOUT} component={Timeout} exact />
+          <Route path={pathRoutes.VOTESUCCESS} component={VoteSuccess} exact />
         </Router>
         {/* <Footer /> */}
       </div>

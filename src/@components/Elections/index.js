@@ -172,6 +172,7 @@ class Elections extends Component {
   }
 
   vote = (password) => {
+    this.props.controlledCountdown(2);
     this.setState({ visible: false, bButtonVote: true, loadingVote: true });
     voterService.vote(this.state.electoralEventPublickey, this.state.elections, password)
       .then(response => {
@@ -179,6 +180,7 @@ class Elections extends Component {
       })
       .catch(error => {
         console.log('error :', error);
+        this.props.controlledCountdown(1);
         this.setState({ bButtonVote: false, loadingVote: false });
         message.success('error');
       })

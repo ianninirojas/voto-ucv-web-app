@@ -3,7 +3,7 @@
 // }
 
 const dev = {  
-  apiUrl: 'https://b8b3c020.ngrok.io'
+  apiUrl: 'https://a5690ff9.ngrok.io'
 }
 
 // falta agregar los tipos de ambients
