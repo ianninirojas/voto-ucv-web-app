@@ -32,7 +32,7 @@ class CandidateUninominal extends Component {
   highlightSelectedCandidate = (candidate) => {
     return this.state.selectedCandidate ?
       (
-        this.state.selectedCandidate.documentIdentity === candidate.documentIdentity ? { boxShadow: "0px 0px 10px 1px #52c41a" }
+        this.state.selectedCandidate.identityDocument === candidate.identityDocument ? { boxShadow: "0px 0px 10px 1px #52c41a" }
           :
           {}
       )
@@ -45,7 +45,7 @@ class CandidateUninominal extends Component {
     return (
       this.state.selectedCandidate ?
         (
-          this.state.selectedCandidate.documentIdentity === candidate.documentIdentity ?
+          this.state.selectedCandidate.identityDocument === candidate.identityDocument ?
             <img src={selectedCandidateUninominal} alt={candidate.name} style={style} />
             :
             <img src={candidateUninominal} alt={candidate.name} style={style} />
@@ -88,7 +88,7 @@ class CandidateUninominal extends Component {
           grid={{ gutter: 15, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 5 }}
           dataSource={this.state.election.candidates}
           renderItem={(candidate) => (
-            <List.Item key={candidate.documentIdentity}>
+            <List.Item key={candidate.identityDocument}>
               <Card
                 hoverable
                 style={this.highlightSelectedCandidate(candidate)}

@@ -8,8 +8,11 @@ import { pathRoutes } from '../../@constans';
 
 import {
   Auth,
+  Result,
   Access,
-  Ballot
+  Ballot,
+  Timeout,
+  ElectoralEvents,
 } from '../../@pages';
 import { Footer } from '../Footer';
 
@@ -18,11 +21,14 @@ class Navigation extends Component {
     return (
       <div className='all-height'>
         <Router history={history}>
+          <Route path={pathRoutes.ELECTORALEVENTS} component={ElectoralEvents} exact />
           <Route path={pathRoutes.AUTH} component={Auth} exact />
           <Route path={pathRoutes.ACCESS} component={Access} exact />
           <Route path={pathRoutes.BALLOT} component={Ballot} exact />
+          <Route path={pathRoutes.RESULT} component={Result} exact />
+          <Route path={pathRoutes.TIMEOUT} component={Timeout} exact />
         </Router>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     );
   }

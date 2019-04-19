@@ -1,25 +1,25 @@
 import { env } from "../@env";
-import { authHeader, handleResponse } from '../@helpers';
+import { handleResponse } from '../@helpers';
 
 const getAll = (electoralEventPublickey) => {
   const requestOptions = {
     method: 'GET',
-    headers: { Authorization: authHeader(), 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' },
   };
   return fetch(`${env.apiUrl}/electoral-event/${electoralEventPublickey}/election`, requestOptions).then(handleResponse);
 }
 
-const create = (electoralEventPublickey, data) => {
+const getResult = (electoralEventPublickey, election) => {
   const requestOptions = {
     method: 'POST',
-    headers: { Authorization: authHeader(), 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ election })
   };
-  return fetch(`${env.apiUrl}/electoral-event/${electoralEventPublickey}/election`, requestOptions).then(handleResponse);
+  return fetch(`${env.apiUrl}/electoral-event/${electoralEventPublickey}/election/result`, requestOptions).then(handleResponse);
 }
 
 export const electionService = {
   getAll,
-  create,
+  getResult
 }
 

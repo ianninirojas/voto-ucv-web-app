@@ -46,16 +46,13 @@ class AuthForm extends Component {
             <br />
             <span>Por favor, contacte a la comisión electoral</span>
           </span>
-
-        setTimeout(() => {
-          this.setState({
-            error: error,
-            loading: false,
-            statusValidation: 'exception',
-            percentValidation: 100,
-            formatValidation: () => <span style={{ fontSize: '1.1em' }}>Error</span>
-          });
-        }, 4000)
+        this.setState({
+          error: error,
+          loading: false,
+          statusValidation: 'exception',
+          percentValidation: 100,
+          formatValidation: () => <span style={{ fontSize: '1.1em' }}>Error</span>
+        });
       })
   }
 

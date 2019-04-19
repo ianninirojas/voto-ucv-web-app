@@ -60,6 +60,9 @@ const vote = (electoralEventPublickey, elections, password) => {
   return fetch(`${env.apiUrl}/electoral-event/${electoralEventPublickey}/voter/vote`, requestOptions).then(handleResponse);
 }
 
+const refreshToken = (token) => {
+  localStorage.setItem('currentVoter', token);
+}
 
 export const voterService = {
   vote,
@@ -67,6 +70,7 @@ export const voterService = {
   login,
   access,
   removeTokenAccess,
+  refreshToken,
   currentVoter: currentVoterSubject.asObservable(),
   get currentVoterValue() { return currentVoterSubject.value }
 }

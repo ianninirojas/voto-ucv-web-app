@@ -10,9 +10,14 @@ import {
   Button,
   Form,
   Input,
+  message,
 } from 'antd';
 
-import { Election } from "../../@components";
+import { Election, Spinner } from "../../@components";
+
+import { TypeCandidate } from '../../@constans';
+
+import { voterService } from '../../@services';
 
 import candidateUninominal from '../../@assets/candidate-uninominal.png'
 
@@ -22,10 +27,7 @@ import candidatesList from '../../@assets/candidates-list.png'
 
 import selectedCandidatesList from '../../@assets/selected-candidates-list.png'
 
-import { TypeCandidate } from '../../@constans';
-
 import './style.css'
-import { voterService } from '../../@services';
 
 const { Meta } = Card;
 
@@ -68,59 +70,13 @@ class Elections extends Component {
     super(props);
     this.state = {
       electoralEventPublickey: this.props.electoralEventPublickey,
-      elections: [],
+      elections: this.props.elections,
       electionSelected: {},
-      loadingElections: true,
       showElection: false,
       bButtonVote: true,
-      visible: false
+      visible: false,
+      loadingVote: false
     }
-  }
-
-  componentDidMount = () => {
-    this.getElections();
-  }
-
-  getElections = () => {
-    const elections = [
-      {
-        id: '31f18g1bvi1917v',
-        name: 'Decano',
-        type: 'Eleccion de Decano',
-        levelElection: 'universidad',
-        typeCandidate: 'uninominal',
-        typeElector: 'todos',
-        facultyId: '00',
-        schoolId: '00',
-        allowedVotes: '1',
-        period: '2019-2025',
-        candidates: [
-          { name: 'Yunelis Jimenez', documentIdentity: 20653996, position: 'Rector' },
-          { name: 'Jose Iannini', documentIdentity: 24276962, position: 'Rector' }
-        ]
-      },
-      {
-        id: '13g18vh19b3vu1',
-        name: 'Centro de Estudiante de Computacion',
-        type: 'Centro de Estudiante',
-        levelElection: 'escuela',
-        typeCandidate: 'lista',
-        typeElector: 'estudiante',
-        facultyId: '12',
-        schoolId: '14',
-        allowedVotes: '12',
-        period: '2019-2020',
-        candidates: [
-          { name: 'Yunelis Jimenez', documentIdentity: 20653996, position: 'Presidente', list: 'Cluster' },
-          { name: 'Fran Jimenez', documentIdentity: 20653997, position: 'Cultura', list: 'Cluster' },
-          { name: 'Yune Herrera', documentIdentity: 20653998, position: 'Deporte', list: 'Cluster' },
-          { name: 'Jose Iannini', documentIdentity: 24276962, position: 'Presidente', list: 'PC1' },
-          { name: 'Francisco Rojas', documentIdentity: 24276961, position: 'Cultura', list: 'PC1' },
-          { name: 'Jose Herrera', documentIdentity: 20653999, position: 'Deporte', list: 'PC1' },
-        ]
-      },
-    ];
-    this.setState({ elections, loadingElections: false });
   }
 
   showSelectedElection = (electionSelected) => {
@@ -216,12 +172,15 @@ class Elections extends Component {
   }
 
   vote = (password) => {
+    this.setState({ visible: false, bButtonVote: true, loadingVote: true });
     voterService.vote(this.state.electoralEventPublickey, this.state.elections, password)
       .then(response => {
-
+        message.success(response);
       })
       .catch(error => {
-
+        console.log('error :', error);
+        this.setState({ bButtonVote: false, loadingVote: false });
+        message.success('error');
       })
   }
 
@@ -229,14 +188,14 @@ class Elections extends Component {
     this.setState({ visible: false });
   }
 
-  handleCreate = () => {
+  confirmPassword = (e) => {
+    e.preventDefault();
     const form = this.formRef.props.form;
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
       this.vote(values.password);
-      this.setState({ visible: false });
     });
   }
 
@@ -247,65 +206,72 @@ class Elections extends Component {
   render() {
     return (
       <div>
-        <Row>
-          <Col
-            xs={{ span: 22, offset: 1 }}
-            sm={{ span: 22, offset: 1 }}
-            md={{ span: 22, offset: 1 }}
-            lg={{ span: 23, offset: 1 }}
-            xl={{ span: 23, offset: 1 }}
-          >
-            {!this.state.showElection && (
-              <div>
-                <h3>Escoja la elección en la que desea participar</h3>
-                <List
-                  loading={this.state.loadingElections}
-                  grid={{ gutter: 15, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 5 }}
-                  dataSource={this.state.elections}
-                  renderItem={(election) => (
-                    <List.Item key={election.id}>
-                      <Card
-                        cover={this.highlightImageSelectedCandidate(election)}
-                        actions={[<Button type='primary' style={{ borderRadius: '0px', height: '100%' }} block onClick={() => { this.showSelectedElection(election) }}>{this.textButtonSelectCandidate(election)}</Button>]}
-                      >
-                        <Meta
-                          style={{ textAlign: 'center' }}
-                          title={election.name}
-                        />
-                      </Card>
-                    </List.Item>
-                  )}
-                />
-                <br />
-                <div className='text-center'>
-                  <Button
-                    type='primary'
-                    size='large'
-                    onClick={this.confirmVote}
-                    disabled={this.state.bButtonVote}
-                  >
-                    VOTAR
-                </Button>
-                </div>
-              </div>
-            )}
+        {this.state.loadingVote && (
+          <Spinner>
+            <p>Esto puede tomar un rato...</p>
+          </Spinner>
+        )}
 
-            {this.state.showElection && (
-              <div>
-                <Election
-                  election={this.state.electionSelected}
-                  deselectElection={this.deselectElection}
-                  updateElection={this.updateElection}
-                />
-              </div>
-            )}
-          </Col>
-        </Row>
+        {!this.state.loadingVote && (
+          <Row>
+            <Col
+              xs={{ span: 22, offset: 1 }}
+              sm={{ span: 22, offset: 1 }}
+              md={{ span: 22, offset: 1 }}
+              lg={{ span: 23, offset: 1 }}
+              xl={{ span: 23, offset: 1 }}
+            >
+              {!this.state.showElection && (
+                <div>
+                  <h3>Escoja la elección en la que desea participar</h3>
+                  <List
+                    grid={{ gutter: 15, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 5 }}
+                    dataSource={this.state.elections}
+                    renderItem={(election) => (
+                      <List.Item key={election.id}>
+                        <Card
+                          cover={this.highlightImageSelectedCandidate(election)}
+                          actions={[<Button type='primary' style={{ borderRadius: '0px', height: '100%' }} block onClick={() => { this.showSelectedElection(election) }}>{this.textButtonSelectCandidate(election)}</Button>]}
+                        >
+                          <Meta
+                            style={{ textAlign: 'center' }}
+                            title={election.name}
+                          />
+                        </Card>
+                      </List.Item>
+                    )}
+                  />
+                  <br />
+                  <div className='text-center'>
+                    <Button
+                      type='primary'
+                      size='large'
+                      onClick={this.confirmVote}
+                      disabled={this.state.bButtonVote}
+                    >
+                      VOTAR
+                </Button>
+                  </div>
+                </div>
+              )}
+
+              {this.state.showElection && (
+                <div>
+                  <Election
+                    election={this.state.electionSelected}
+                    deselectElection={this.deselectElection}
+                    updateElection={this.updateElection}
+                  />
+                </div>
+              )}
+            </Col>
+          </Row>
+        )}
         <PasswordForm
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
           onCancel={this.handleCancel}
-          onCreate={this.handleCreate}
+          onCreate={this.confirmPassword}
         />
       </div >
     );

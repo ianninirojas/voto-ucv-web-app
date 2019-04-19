@@ -11,7 +11,7 @@ import {
   Col,
 } from 'antd';
 
-import { voterService } from "../../@services";
+import { voterService, electoralEventService } from "../../@services";
 import { pathRoutes } from '../../@constans';
 
 import './style.css'
@@ -30,12 +30,24 @@ class Access extends Component {
       tokenAccess: this.props.match.params.tokenAccess,
       statusValidation: 'active',
       percentValidation: 0,
+      electoralEvent: {},
       formatValidation: () => <span style={{ fontSize: '1.2em', color: '#ffffff' }}>Validando</span>
     }
   }
 
   componentDidMount = () => {
     this.accessVoter();
+    this.getElectoralEvent();
+  }
+
+  getElectoralEvent = () => {
+    electoralEventService.get(this.state.electoralEventPublickey)
+      .then(electoralEvent => {
+        this.setState({ electoralEvent, loadingElectoralEvent: false });
+      })
+      .catch(error => {
+        console.log('error :', error);
+      })
   }
 
   accessVoter = () => {
@@ -85,7 +97,7 @@ class Access extends Component {
       if (!err) {
         if (_this.state.newPassword) {
           confirm({
-            width:'500px',
+            width: '500px',
             title: '¿Esta seguro de utilizar esta contraseña?',
             content: 'Será usada al momento de emitir el voto',
             okText: 'Si',
@@ -106,10 +118,14 @@ class Access extends Component {
   login = (values) => {
     this.setState({ loading: true });
     voterService.login(this.state.electoralEventPublickey, values.password)
-      .then(_ => {
-        this.props.history.push(pathRoutes.BALLOT.replace(':electoralEventPublickey', this.state.electoralEventPublickey));
+      .then(elections => {
+        this.props.history.push({
+          pathname: pathRoutes.BALLOT.replace(':electoralEventPublickey', this.state.electoralEventPublickey),
+          state: { elections }
+        });
       })
       .catch(error => {
+        console.log('error :', error);
         this.setState({
           error,
           loading: false
@@ -217,6 +233,11 @@ class Access extends Component {
     const { RenderForm, ProgressValidation } = this;
     return (
       <div>
+        <div className='text-center'>
+          <h2 style={{ color: '#ffffff' }}>Evento Electoral</h2>
+          <h3 style={{ color: '#ffffff' }}>{this.state.electoralEvent.name}</h3>
+        </div>
+        <br />
         {this.state.showForm ? (
           <RenderForm />
         ) : (

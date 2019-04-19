@@ -33,7 +33,7 @@ class CandidateList extends Component {
     if (this.state.selectedCandidate)
     return this.state.selectedCandidate ?
       (
-        this.state.selectedCandidate.documentIdentity === candidate.documentIdentity ? { boxShadow: "0px 0px 10px 1px #52c41a" }
+        this.state.selectedCandidate.identityDocument === candidate.identityDocument ? { boxShadow: "0px 0px 10px 1px #52c41a" }
           :
           {}
       )
@@ -46,7 +46,7 @@ class CandidateList extends Component {
     return (
       this.state.selectedCandidate ?
         (
-          this.state.selectedCandidate.documentIdentity === candidate.documentIdentity ?
+          this.state.selectedCandidate.identityDocument === candidate.identityDocument ?
             <img src={selectedCandidateUninominal} alt={candidate.name} style={style} />
             :
             <img src={candidateUninominal} alt={candidate.name} style={style} />
@@ -87,7 +87,7 @@ class CandidateList extends Component {
           grid={{ gutter: 15, xs: 1, sm: 1, md: 2, lg: 3, xl: 2, xxl: 5 }}
           dataSource={this.state.candidates}
           renderItem={(candidate) => (
-            <List.Item key={candidate.documentIdentity}>
+            <List.Item key={candidate.identityDocument}>
               <Card
                 hoverable
                 style={this.highlightSelectedCandidate(candidate)}
@@ -97,7 +97,7 @@ class CandidateList extends Component {
                 <Meta
                   style={{ textAlign: 'center' }}
                   title={candidate.name}
-                  description={candidate.list}
+                  description={candidate.listName}
                 />
               </Card>
             </List.Item>

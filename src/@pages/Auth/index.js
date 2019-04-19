@@ -20,7 +20,7 @@ class Auth extends Component {
             lg={24}
             xl={24}
           >
-            <div className='text-center access-logo' style={{ paddingTop: '100px' }}>
+            <div className='text-center access-logo' style={{ paddingTop: '70px' }}>
               <img src={logo} alt="Logo" width='150px' />
             </div>
             <br />
@@ -29,7 +29,6 @@ class Auth extends Component {
             </div>
           </Col>
         </Row>
-        <Footer />
       </div >
     );
   }
