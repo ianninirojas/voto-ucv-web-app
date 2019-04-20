@@ -5,6 +5,7 @@ import { Row, Col } from "antd";
 import { Footer } from '../../@components';
 
 import logo from "../../@assets/logo.png";
+import { ElectoralEventList } from '../../@components/ElectoralEventList';
 
 // import './style.css'
 class ElectoralEvents extends Component {
@@ -24,8 +25,8 @@ class ElectoralEvents extends Component {
               <img src={logo} alt="Logo" width='150px' />
             </div>
             <br />
-            <div className='auth-box' style={{ paddingTop: '50px' }}>
-              {/* <AuthForm history={this.props.history} {...this.props} /> */}
+            <div className='auth-box' style={{ paddingTop: '40px' }}>
+              <ElectoralEventList />
             </div>
           </Col>
         </Row>

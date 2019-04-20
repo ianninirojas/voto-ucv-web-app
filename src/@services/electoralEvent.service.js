@@ -9,6 +9,15 @@ const get = (electoralEventPublickey) => {
   return fetch(`${env.apiUrl}/electoral-event/${electoralEventPublickey}`, requestOptions).then(handleResponse);
 }
 
+const getAll = () => {
+  const requestOptions = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  };
+  return fetch(`${env.apiUrl}/electoral-event`, requestOptions).then(handleResponse);
+}
+
 export const electoralEventService = {
-  get
+  get,
+  getAll
 }

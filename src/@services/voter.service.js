@@ -30,7 +30,7 @@ const access = (electoralEventPublickey, tokenAccess) => {
     });
 }
 
-const removeTokenAccess = () => {
+const removeCurrentVoter = () => {
   localStorage.removeItem('currentVoter');
   currentVoterSubject.next(null);
 }
@@ -69,7 +69,7 @@ export const voterService = {
   auth,
   login,
   access,
-  removeTokenAccess,
+  removeCurrentVoter,
   refreshToken,
   currentVoter: currentVoterSubject.asObservable(),
   get currentVoterValue() { return currentVoterSubject.value }

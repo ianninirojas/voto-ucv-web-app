@@ -15,7 +15,7 @@ import {
 
 import { Election, Spinner } from "../../@components";
 
-import { TypeCandidate } from '../../@constans';
+import { TypeCandidate, pathRoutes } from '../../@constans';
 
 import { voterService } from '../../@services';
 
@@ -176,7 +176,7 @@ class Elections extends Component {
     this.setState({ visible: false, bButtonVote: true, loadingVote: true });
     voterService.vote(this.state.electoralEventPublickey, this.state.elections, password)
       .then(response => {
-        message.success(response);
+        this.props.history.push(pathRoutes.VOTESUCCESS.replace(':electoralEventPublickey', this.state.electoralEventPublickey));
       })
       .catch(error => {
         console.log('error :', error);

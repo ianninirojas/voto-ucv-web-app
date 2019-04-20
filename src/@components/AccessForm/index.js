@@ -91,7 +91,7 @@ class Access extends Component {
       })
   }
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
     const _this = this;
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -104,18 +104,19 @@ class Access extends Component {
             okType: 'primary',
             cancelText: 'No',
             onOk() {
-              _this.login(values);
+              _this.login(values, e);
             },
           });
         }
         else {
-          _this.login(values);
+          _this.login(values, e);
         }
       }
     });
   }
 
-  login = (values) => {
+  login = (values, e) => {
+    e.preventDefault();
     this.setState({ loading: true });
     voterService.login(this.state.electoralEventPublickey, values.password)
       .then(elections => {
@@ -133,9 +134,9 @@ class Access extends Component {
       })
   }
 
-  showModalConfirm = () => {
+  showModalConfirm = (e) => {
     const _this = this;
-    _this.handleSubmit();
+    _this.handleSubmit(e);
   }
 
   compareToFirstPassword = (rule, value, callback) => {

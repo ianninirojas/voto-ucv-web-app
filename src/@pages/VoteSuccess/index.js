@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
-import { Row, Col } from "antd";
+import { Row, Col, Progress, Icon, Button } from "antd";
 
-import { Footer } from '../../@components';
+import { Link } from "react-router-dom";
 
 import logo from "../../@assets/logo.png";
 
 import './style.css'
+import { pathRoutes } from '../../@constans';
 
 class VoteSuccess extends Component {
 
@@ -25,8 +26,16 @@ class VoteSuccess extends Component {
                             <img src={logo} alt="Logo" width='150px' />
                         </div>
                         <br />
-                        <div className='text-center' style={{ paddingTop: '50px'}}>
-                            <h2 style={{ color:"#ffffff"}}>Su voto ha sido transmitido con éxito</h2>
+                        <div className='text-center' style={{ paddingTop: '10px' }}>
+                            <Progress type='circle' width='110px' percent={100} format={() => <Icon type='check' style={{ fontSize: '3em' }} />} status='success' />
+                        </div>
+                        <div className='text-center' style={{ paddingTop: '30px' }}>
+                            <h2 style={{ color: "#ffffff" }}>Su voto ha sido transmitido con éxito</h2>
+                        </div>
+                        <div className='text-center' style={{ paddingTop: '30px' }}>
+                            <Link to={pathRoutes.RESULT.replace(':electoralEventPublickey', this.props.match.params.electoralEventPublickey)}>
+                                <Button type='primary' size='large'>RESULTADOS</Button>
+                            </Link>
                         </div>
                     </Col>
                 </Row>

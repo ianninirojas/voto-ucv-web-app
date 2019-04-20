@@ -47,7 +47,7 @@ class Ballot extends Component {
   }
 
   Timeout = () => {
-    voterService.removeTokenAccess();
+    voterService.removeCurrentVoter();
     this.props.history.push(pathRoutes.TIMEOUT);
     return <span>You are good to go!</span>;
   }
