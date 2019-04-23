@@ -28,7 +28,7 @@ class ElectionResults extends Component {
 			elections: this.props.elections,
 			electionSelected: {},
 			showElection: false,
-			bButtonVote: true,
+			bElectoralEventActive: this.props.electoralEvent.active,
 			visible: false
 		}
 	}
@@ -70,7 +70,7 @@ class ElectionResults extends Component {
 								<List.Item key={election.id}>
 									<Card
 										cover={this.coverImageElection(election)}
-										actions={[<Button type='primary' style={{ borderRadius: '0px', height: '100%' }} block onClick={() => { this.showSelectedElection(election) }}>RESULTADOS</Button>]}
+										actions={[<Button type='primary' disabled={!this.state.bElectoralEventActive} style={{ borderRadius: '0px', height: '100%' }} block onClick={() => { this.showSelectedElection(election) }}>RESULTADOS</Button>]}
 									>
 										<Meta
 											style={{ textAlign: 'center' }}

@@ -39,10 +39,10 @@ class ElectoralEventList extends Component {
       .then(response => {
         let electoralEvents = [];
         for (const electoralEvent of response) {
-          const publickey = nemAccountService.generatePublicKey(electoralEvent.data.name.toLowerCase());
-          electoralEvent.data['publickey'] = publickey;
-          electoralEvent.data['key'] = publickey;
-          electoralEvents.push(electoralEvent.data)
+          const publickey = nemAccountService.generatePublicKey(electoralEvent.name.toLowerCase());
+          electoralEvent['publickey'] = publickey;
+          electoralEvent['key'] = publickey;
+          electoralEvents.push(electoralEvent)
         }
         this.setState({ electoralEvents, loadingElectoralEvents: false });
       })
@@ -52,7 +52,7 @@ class ElectoralEventList extends Component {
     return (
       <div>
         {this.state.loadingElectoralEvents && (
-          <Spinner color='white'/>
+          <Spinner color='white' />
         )}
         {!this.state.loadingElectoralEvents && (
           <div>
@@ -66,14 +66,21 @@ class ElectoralEventList extends Component {
               renderItem={electoralEvent => (
                 <List.Item key={electoralEvent.publickey}
                   actions={[
-                    <Tooltip placement="right" title="Resultados">
+                    <Tooltip placement="top" title="Activo">
+                      <Icon type='check' style={{ fontSize: '28px', color: electoralEvent.finished ? ('#ff0000') : (electoralEvent.active ? '#00b600' : '#000000') }} />
+                    </Tooltip>,
+                    <Tooltip placement="top" title="Finalizado">
+                      <Icon type='stop' style={{ fontSize: '28px', color: electoralEvent.finished ? '#ff0000' : '#f5f5f5' }} />
+                    </Tooltip>,
+                    <Tooltip placement="top" title="Resultados">
                       <Link to={pathRoutes.RESULT.replace(':electoralEventPublickey', electoralEvent.publickey)}>
-                        <Icon type='bar-chart' style={{ fontSize: '30px', color: '#00b600' }} />
+                        <Icon type='bar-chart' style={{ fontSize: '28px', color: '#00b600' }} />
                       </Link>
                     </Tooltip>
                   ]}>
                   <List.Item.Meta
-                    title={<span style={{ color: '#ffffff', fontSize: '18px' }} >{electoralEvent.name}</span>}
+                    title={<span style={{ color: '#ffffff', fontSize: '20px' }} >{electoralEvent.name}</span>}
+                    description={<span style={{ color: '#ffffff', fontSize: '15px' }} >{electoralEvent.startDate} - {electoralEvent.endDate}</span>}
                   />
                 </List.Item>
               )}

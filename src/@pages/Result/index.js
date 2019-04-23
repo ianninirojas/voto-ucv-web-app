@@ -68,7 +68,11 @@ class Result extends Component {
             <div style={{ paddingTop: '20px' }}>
               <h1> <strong>Evento Electoral:</strong> {this.state.electoralEvent.name}</h1>
             </div>
-            <ElectionResults electoralEventPublickey={this.state.electoralEventPublickey} elections={this.state.elections} />
+            <ElectionResults
+              elections={this.state.elections}
+              electoralEvent={this.state.electoralEvent}
+              electoralEventPublickey={this.state.electoralEventPublickey}
+            />
           </div>
         )}
       </div>

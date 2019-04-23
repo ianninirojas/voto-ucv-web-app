@@ -44,7 +44,6 @@ const login = (electoralEventPublickey, password) => {
 }
 
 const vote = (electoralEventPublickey, candidates, password) => {
-  console.log('vote-service')
   const requestOptions = {
     method: 'POST',
     headers: { Authorization: authHeader(), 'Content-Type': 'application/json' },

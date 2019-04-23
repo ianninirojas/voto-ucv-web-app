@@ -36,6 +36,7 @@ class AuthForm extends Component {
           percentValidation: 100,
           formatValidation: () => <span style={{ fontSize: '1.1em' }}>Autenticado</span>
         });
+        voterService.removeCurrentVoter();
       })
       .catch(error => {
         error =
