@@ -4,9 +4,8 @@ import { Router, Route, Redirect, Switch } from 'react-router-dom';
 
 import { history } from "../../@helpers";
 
-import { pathRoutes } from '../../@constans';
-
 import {
+  Login,
   Auth,
   Result,
   Access,
@@ -15,9 +14,17 @@ import {
   ElectoralEvents,
   VoteSuccess,
 } from '../../@pages';
-import { Footer } from '../Footer';
+
+import {
+  Footer,
+  CheckToken,
+  PrivateRoute,
+} from "../../@components";
+
 import { voterService } from '../../@services';
-import { PrivateRoute } from '../PrivateRoute';
+
+import { pathRoutes } from '../../@constans';
+import { DefaultLayout } from '../../@layouts/DefaultLayout';
 
 class Navigation extends Component {
   constructor(props) {
@@ -35,13 +42,15 @@ class Navigation extends Component {
       <div className='all-height'>
         <Router history={history}>
           <Switch>
-            <Route path={pathRoutes.ELECTORALEVENTS} component={ElectoralEvents} exact />
-            <Route path={pathRoutes.AUTH} component={Auth} exact />
-            <Route path={pathRoutes.ACCESS} component={Access} exact />
+            <Route path={pathRoutes.CHECKTOKEN} component={CheckToken} exact />
+            <Route path={pathRoutes.ELECTORALEVENTS} component={DefaultLayout(ElectoralEvents)} exact />
             <Route path={pathRoutes.RESULT} component={Result} exact />
-            <PrivateRoute path={pathRoutes.BALLOT} component={Ballot} exact />
-            <PrivateRoute path={pathRoutes.VOTESUCCESS} component={VoteSuccess} exact />
-            <PrivateRoute path={pathRoutes.TIMEOUT} component={Timeout} exact />
+            <PrivateRoute path={pathRoutes.AUTH} codeType='auth' component={DefaultLayout(Auth)} exact />
+            <PrivateRoute path={pathRoutes.ACCESS} codeType='access' component={DefaultLayout(Access)} exact />
+            <PrivateRoute path={pathRoutes.LOGIN} codeType='login' component={DefaultLayout(Login)} exact />
+            <PrivateRoute path={pathRoutes.BALLOT} codeType='vote' component={Ballot} exact />
+            <Route path={pathRoutes.VOTESUCCESS} codeType='vote' component={DefaultLayout(VoteSuccess)} exact />
+            <PrivateRoute path={pathRoutes.TIMEOUT} codeType='vote' component={DefaultLayout(Timeout)} exact />
             <Redirect to={pathRoutes.ELECTORALEVENTS} component={ElectoralEvents} exact />
           </Switch>
         </Router>

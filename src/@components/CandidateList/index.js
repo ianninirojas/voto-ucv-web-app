@@ -31,14 +31,14 @@ class CandidateList extends Component {
 
   highlightSelectedCandidate = (candidate) => {
     if (this.state.selectedCandidate)
-    return this.state.selectedCandidate ?
-      (
-        this.state.selectedCandidate.identityDocument === candidate.identityDocument ? { boxShadow: "0px 0px 10px 1px #52c41a" }
-          :
-          {}
-      )
-      :
-      ({})
+      return this.state.selectedCandidate ?
+        (
+          this.state.selectedCandidate.identityDocument === candidate.identityDocument ? { boxShadow: "0px 0px 10px 1px #52c41a" }
+            :
+            {}
+        )
+        :
+        ({})
   }
 
   highlightImageSelectedCandidate = (candidate) => {
@@ -62,7 +62,7 @@ class CandidateList extends Component {
     const { selectedCandidate } = this.state;
     const _this = this;
     confirm({
-      width:'500px',
+      width: '500px',
       title: '¿Esta seguro de seleccionar este candidato?',
       content: `${selectedCandidate.name}`,
       okText: 'CONFIRMAR',
@@ -84,7 +84,7 @@ class CandidateList extends Component {
     return (
       <div>
         <List
-          grid={{ gutter: 15, xs: 1, sm: 1, md: 2, lg: 3, xl: 2, xxl: 5 }}
+          grid={{ gutter: 15, xs: 1, sm: 1, md: 2, lg: 4, xl: 4, xxl: 4 }}
           dataSource={this.state.candidates}
           renderItem={(candidate) => (
             <List.Item key={candidate.identityDocument}>

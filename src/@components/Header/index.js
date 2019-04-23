@@ -12,7 +12,7 @@ class Header extends Component {
     return (
       <Layout.Header>
         <div className='float-left'>
-          <div className="logo" >
+          <div className="header-logo" >
             <img src={logo} alt={"Logo"} />
           </div>
         </div>

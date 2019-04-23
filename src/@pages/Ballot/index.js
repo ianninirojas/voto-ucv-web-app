@@ -47,7 +47,6 @@ class Ballot extends Component {
   }
 
   Timeout = () => {
-    voterService.removeCurrentVoter();
     this.props.history.push(pathRoutes.TIMEOUT);
     return <span>You are good to go!</span>;
   }
@@ -86,14 +85,14 @@ class Ballot extends Component {
         )}
 
         {!this.state.loadingElectoralEvent && (
-          <div className='ballot-body'>
-            <Row>
+          <div className='container'>
+            <Row style={{paddingTop: '20px'}} >
               <Col
-                xs={{ span: 22, offset: 1 }}
-                sm={{ span: 22, offset: 1 }}
-                md={{ span: 10, offset: 1 }}
-                lg={{ span: 10, offset: 1 }}
-                xl={{ span: 10, offset: 1 }}
+                xs={{ span: 23 }}
+                sm={{ span: 23 }}
+                md={{ span: 11 }}
+                lg={{ span: 11 }}
+                xl={{ span: 11 }}
               >
                 <h1><strong>Evento Electoral:</strong> {this.state.electoralEvent.name}</h1>
               </Col>
@@ -110,13 +109,12 @@ class Ballot extends Component {
                   ref={this.CountdownRef}
                 />
               </Col>
-
-
             </Row>
             <Elections
               electoralEventPublickey={this.state.electoralEventPublickey}
               elections={this.props.location.state.elections}
               controlledCountdown={this.controlledCountdown}
+              {...this.props}
             />
           </div>
         )}

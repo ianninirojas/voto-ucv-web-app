@@ -63,7 +63,7 @@ class ElectionResult extends Component {
         {!this.state.loadingResult && (
           <Row>
             <h3> <span style={{ color: '#ff0000' }}> Resultados</span></h3>
-            <Col xs={{ span: 22 }} sm={{ span: 12 }} md={{ span: 12 }} lg={{ span: 12 }} xl={{ span: 12 }}>
+            <Col xs={{ span: 21 }} sm={{ span: 12 }} md={{ span: 12 }} lg={{ span: 12 }} xl={{ span: 12 }}>
               <h3><strong>Elección:</strong> {election.name}</h3>
             </Col>
             <Col xs={{ span: 1 }} sm={{ span: 1, offset: 10 }} md={{ span: 1, offset: 10 }} lg={{ span: 1, offset: 10 }} xl={{ span: 1, offset: 10 }}>

@@ -10,10 +10,9 @@ class AuthForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: '',
       loading: false,
       electoralEventPublickey: this.props.match.params.electoralEventPublickey,
-      tokenAuth: this.props.match.params.tokenAuth,
+      error: '',
       statusValidation: 'active',
       percentValidation: 0,
       formatValidation: () => <span style={{ fontSize: '1.2em', color: '#ffffff' }}>Validando</span>
@@ -25,12 +24,11 @@ class AuthForm extends Component {
   }
 
   authVoter = () => {
-    const tokenAuth = this.state.tokenAuth;
     const electoralEventPublickey = this.state.electoralEventPublickey;
     this.setState({
       loading: true
     });
-    voterService.auth(electoralEventPublickey, tokenAuth)
+    voterService.auth(electoralEventPublickey)
       .then(_ => {
         this.setState({
           loading: false,
@@ -53,6 +51,7 @@ class AuthForm extends Component {
           percentValidation: 100,
           formatValidation: () => <span style={{ fontSize: '1.1em' }}>Error</span>
         });
+        voterService.removeCurrentVoter();
       })
   }
 

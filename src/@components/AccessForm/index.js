@@ -16,8 +16,7 @@ import { pathRoutes } from '../../@constans';
 
 import './style.css'
 
-const FormItem = Form.Item;
-const confirm = Modal.confirm;
+
 
 class Access extends Component {
   constructor(props) {
@@ -25,9 +24,7 @@ class Access extends Component {
     this.state = {
       error: '',
       loading: false,
-      showForm: false,
       electoralEventPublickey: this.props.match.params.electoralEventPublickey,
-      tokenAccess: this.props.match.params.tokenAccess,
       statusValidation: 'active',
       percentValidation: 0,
       electoralEvent: {},
@@ -36,8 +33,8 @@ class Access extends Component {
   }
 
   componentDidMount = () => {
-    this.accessVoter();
     this.getElectoralEvent();
+    this.accessVoter();
   }
 
   getElectoralEvent = () => {
@@ -51,12 +48,11 @@ class Access extends Component {
   }
 
   accessVoter = () => {
-    const tokenAccess = this.state.tokenAccess;
     const electoralEventPublickey = this.state.electoralEventPublickey;
     this.setState({
       loading: true
     });
-    voterService.access(electoralEventPublickey, tokenAccess)
+    voterService.access(electoralEventPublickey)
       .then(response => {
         this.setState({
           loading: false,
@@ -65,15 +61,21 @@ class Access extends Component {
           formatValidation: () => <span style={{ fontSize: '1.1em' }}>Acceso</span>
         });
         setTimeout(() => {
+          let newPassword;
           if (parseInt(response.data.code) === 1) {
-            this.setState({ newPassword: true, showForm: true })
+            newPassword = true
           }
           else {
-            this.setState({ newPassword: false, showForm: true })
+            newPassword = false
           }
+          this.props.history.push({
+            pathname: pathRoutes.LOGIN.replace(':electoralEventPublickey', this.state.electoralEventPublickey),
+            state: { newPassword }
+          });
         }, 2000)
       })
       .catch(error => {
+        console.log('error :', error);
         error =
           <span>
             <span>{error}</span>
@@ -81,6 +83,7 @@ class Access extends Component {
             <span>Por favor, contacte a la comisión electoral</span>
           </span>
 
+        voterService.removeCurrentVoter();
         this.setState({
           error: error,
           loading: false,
@@ -91,136 +94,13 @@ class Access extends Component {
       })
   }
 
-  handleSubmit = (e) => {
-    const _this = this;
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        if (_this.state.newPassword) {
-          confirm({
-            width: '500px',
-            title: '¿Esta seguro de utilizar esta contraseña?',
-            content: 'Será usada al momento de emitir el voto',
-            okText: 'Si',
-            okType: 'primary',
-            cancelText: 'No',
-            onOk() {
-              _this.login(values, e);
-            },
-          });
-        }
-        else {
-          _this.login(values, e);
-        }
-      }
-    });
-  }
-
-  login = (values, e) => {
-    e.preventDefault();
-    this.setState({ loading: true });
-    voterService.login(this.state.electoralEventPublickey, values.password)
-      .then(elections => {
-        this.props.history.push({
-          pathname: pathRoutes.BALLOT.replace(':electoralEventPublickey', this.state.electoralEventPublickey),
-          state: { elections }
-        });
-      })
-      .catch(error => {
-        console.log('error :', error);
-        this.setState({
-          error,
-          loading: false
-        });
-      })
-  }
-
-  showModalConfirm = (e) => {
-    const _this = this;
-    _this.handleSubmit(e);
-  }
-
-  compareToFirstPassword = (rule, value, callback) => {
-    const form = this.props.form;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Contraseña no coincide');
-    } else {
-      callback();
-    }
-  }
-
-  RenderForm = () => {
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <div className='access-box text-center'>
-        <Col
-          xs={20}
-          sm={20}
-          md={11}
-          lg={8}
-          xl={8}
-        >
-          <Form onSubmit={this.handleSubmit}>
-            {/* PASSWORD */}
-            <FormItem>
-              {getFieldDecorator('password', {
-                rules: [{ required: true, message: 'Requerido' }],
-              })(
-                <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Contraseña" />
-              )}
-            </FormItem>
-            {/* PASSWORD */}
-
-            {/* VERIFY PASSWORD */}
-            {this.state.newPassword && (
-              <FormItem>
-                {getFieldDecorator('verifyPassword', {
-                  rules: [
-                    { required: true, message: 'Requerido' },
-                    { validator: this.compareToFirstPassword }
-                  ],
-                })(
-                  <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Repita contraseña" />
-                )}
-              </FormItem>
-            )}
-            {/* VERIFY PASSWORD */}
-
-            {/* API ERROR */}
-            {this.state.error !== '' && (
-              <FormItem>
-                <Alert message={this.state.error} type='error' />
-              </FormItem>
-            )}
-            {/* API ERROR */}
-
-            <FormItem>
-              <span className='text-center'>
-                <Button
-                  block
-                  type="primary"
-                  size='large'
-                  onClick={this.showModalConfirm}
-                  loading={this.state.loading}
-                >
-                  Iniciar
-                    </Button>
-              </span>
-            </FormItem>
-          </Form>
-        </Col>
-      </div>
-    );
-  }
-
   ProgressValidation = () => {
     return (
       <div>
         <Progress type='circle' width='110px' percent={this.state.percentValidation} format={this.state.formatValidation} status={this.state.statusValidation} />
         <br /><br />
         {this.state.statusValidation === 'success' && (
-          <span >
-            <h3 data-text="Cargando..." style={{ color: '#ffffff' }}>Cargando...</h3>
-          </span>
+          <h3 data-text="Cargando..." style={{ color: '#ffffff' }}>Cargando...</h3>
         )}
 
         {this.state.statusValidation === 'exception' && (
@@ -231,21 +111,16 @@ class Access extends Component {
   }
 
   render() {
-    const { RenderForm, ProgressValidation } = this;
+    const { ProgressValidation } = this;
     return (
       <div>
         <div className='text-center'>
           <h2 style={{ color: '#ffffff' }}>Evento Electoral</h2>
           <h3 style={{ color: '#ffffff' }}>{this.state.electoralEvent.name}</h3>
         </div>
-        <br />
-        {this.state.showForm ? (
-          <RenderForm />
-        ) : (
-            <div className='text-center' style={{ paddingTop: '50px' }}>
-              <ProgressValidation />
-            </div>
-          )}
+        <div className='text-center' style={{ paddingTop: '10px' }}>
+          <ProgressValidation />
+        </div>
       </div>
     );
   }

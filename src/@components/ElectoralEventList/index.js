@@ -5,7 +5,8 @@ import {
   Skeleton,
   Button,
   Avatar,
-  Icon
+  Icon,
+  Tooltip
 } from 'antd';
 
 import { Link } from "react-router-dom";
@@ -51,7 +52,7 @@ class ElectoralEventList extends Component {
     return (
       <div>
         {this.state.loadingElectoralEvents && (
-          <Spinner />
+          <Spinner color='white'/>
         )}
         {!this.state.loadingElectoralEvents && (
           <div>
@@ -65,9 +66,11 @@ class ElectoralEventList extends Component {
               renderItem={electoralEvent => (
                 <List.Item key={electoralEvent.publickey}
                   actions={[
-                    <Link to={pathRoutes.RESULT.replace(':electoralEventPublickey', electoralEvent.publickey)}>
-                      <Button type='primary' icon='bar-chart' size='large'></Button>
-                    </Link>
+                    <Tooltip placement="right" title="Resultados">
+                      <Link to={pathRoutes.RESULT.replace(':electoralEventPublickey', electoralEvent.publickey)}>
+                        <Icon type='bar-chart' style={{ fontSize: '30px', color: '#00b600' }} />
+                      </Link>
+                    </Tooltip>
                   ]}>
                   <List.Item.Meta
                     title={<span style={{ color: '#ffffff', fontSize: '18px' }} >{electoralEvent.name}</span>}

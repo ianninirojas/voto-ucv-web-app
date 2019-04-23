@@ -139,7 +139,6 @@ class CandidatesList extends Component {
     return (
       <div>
         <h4>Escoja los candidatos de su preferencia</h4>
-        <br />
         <RenderCandidates />
         <div className='text-center'>
           <Button

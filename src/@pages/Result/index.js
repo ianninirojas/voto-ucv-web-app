@@ -64,18 +64,10 @@ class Result extends Component {
 
         )}
         {!this.state.loadingElectoralEvent && !this.state.loadingElections && (
-          <div className='result-body'>
-            <Row>
-              <Col
-                xs={{ span: 23, offset: 1 }}
-                sm={{ span: 23, offset: 1 }}
-                md={{ span: 23, offset: 1 }}
-                lg={{ span: 23, offset: 1 }}
-                xl={{ span: 23, offset: 1 }}
-              >
-                <h1> <strong>Evento Electoral:</strong> {this.state.electoralEvent.name}</h1>
-              </Col>
-            </Row>
+          <div className='container'>
+            <div style={{ paddingTop: '20px' }}>
+              <h1> <strong>Evento Electoral:</strong> {this.state.electoralEvent.name}</h1>
+            </div>
             <ElectionResults electoralEventPublickey={this.state.electoralEventPublickey} elections={this.state.elections} />
           </div>
         )}

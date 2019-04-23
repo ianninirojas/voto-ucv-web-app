@@ -1,5 +1,5 @@
-.logo img {
-  width: 60px
+.header-logo > img {
+  width: 60px !important;
 }
 
 .ant-layout-header {

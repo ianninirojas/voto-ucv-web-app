@@ -1,29 +1,24 @@
-import React, { Component } from 'react';
+import React from 'react';
+import logo from "../../@assets/logo.png";
 
-import { Layout } from "antd";
+import './style.css'
 
-import { Header, Content, Footer } from "../../@components";
-
-class DefaultLayout extends Component {
-
-  RenderLayout = () => {
-    return (
-      <Layout>
-        <Layout>
-          <Header />
-          <Content />
-          <Footer />
-        </Layout>
-      </Layout>
-    )
+const DefaultLayout = (Component) => {
+  class DefaultLayout extends React.Component {
+    render() {
+      return (
+        <div className='all-height bg'>
+          <div className='logo'>
+            <img src={logo} alt="Logo" />
+          </div>
+          <div className='content'>
+            <Component {...this.props} />
+          </div>
+        </div>
+      )
+    }
   }
-
-  render() {
-    const { RenderLayout } = this
-    return (
-      <RenderLayout />
-    );
-  }
+  return DefaultLayout
 }
 
 export { DefaultLayout };

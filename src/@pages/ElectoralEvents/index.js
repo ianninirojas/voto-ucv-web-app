@@ -1,37 +1,10 @@
 import React, { Component } from 'react';
 
-import { Row, Col } from "antd";
-
-import { Footer } from '../../@components';
-
-import logo from "../../@assets/logo.png";
 import { ElectoralEventList } from '../../@components/ElectoralEventList';
-
-// import './style.css'
 class ElectoralEvents extends Component {
 
   render() {
-    return (
-      <div className='all-height'>
-        <Row className='all-height' style={{ background: 'linear-gradient(-135deg, #083c4a, #096dd9)' }}>
-          <Col
-            xs={24}
-            sm={24}
-            md={24}
-            lg={24}
-            xl={24}
-          >
-            <div className='text-center access-logo' style={{ paddingTop: '70px' }}>
-              <img src={logo} alt="Logo" width='150px' />
-            </div>
-            <br />
-            <div className='auth-box' style={{ paddingTop: '40px' }}>
-              <ElectoralEventList />
-            </div>
-          </Col>
-        </Row>
-      </div >
-    );
+    return (<ElectoralEventList />);
   }
 }
 

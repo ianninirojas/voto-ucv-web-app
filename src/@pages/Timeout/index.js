@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 
-import { Row, Col } from "antd";
+import {
+	Progress,
+	Icon
+} from "antd";
 
-import { Footer } from '../../@components';
-
-import logo from "../../@assets/logo.png";
-
-import './style.css'
 import { voterService } from '../../@services';
 
 class Timeout extends Component {
@@ -17,27 +15,24 @@ class Timeout extends Component {
 
 	render() {
 		return (
-			<div className='all-height'>
-				<Row className='all-height' style={{ background: 'linear-gradient(-135deg, #083c4a, #096dd9)' }}>
-					<Col
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={24}
-					>
-						<div className='text-center' style={{ paddingTop: '70px' }}>
-							<img src={logo} alt="Logo" width='150px' />
-						</div>
+			<div>
+				<div className='text-center'>
+					<Progress type='circle' width='90px' percent={100} format={() => <Icon type='close' style={{ fontSize: '3em' }} />} status='exception' />
+				</div>
+				<div className='text-center' style={{ padding: '30px 30px' }}>
+					<h2 style={{ color: "#ffffff" }}>Se acabó el tiempo</h2>
+					{/* <h3 style={{ color: "#ffffff" }}>Por favor, para continuar con la votación ingrese nuevamente</h3>
+					<h3 style={{ color: "#ffffff" }}>al link del correo <strong>"Autorización Evento Electoral"</strong></h3> */}
+
+					<h3 style={{ color: "#ffffff" }}>
+						<span>Por favor, para continuar con la votación</span>
 						<br />
-						<div className='text-center' style={{ padding: '50px 40px' }}>
-							<h1 style={{ color: "#ffffff" }}>Se acabó el tiempo</h1>
-							<h3 style={{ color: "#ffffff" }}>Por favor, para continuar con la votación ingrese nuevamente</h3>
-							<h3 style={{ color: "#ffffff" }}>al link del correo "Autorización Evento Electoral"</h3>
-						</div>
-					</Col>
-				</Row>
-			</div >
+						<span> ingrese nuevamente al link del correo </span>
+						<br /><br />
+						<strong>"Autorización Evento Electoral"</strong>
+					</h3>
+				</div>
+			</div>
 		);
 	}
 }

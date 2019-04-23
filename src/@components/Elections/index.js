@@ -10,7 +10,7 @@ import {
   Button,
   Form,
   Input,
-  message,
+  notification,
 } from 'antd';
 
 import { Election, Spinner } from "../../@components";
@@ -64,7 +64,6 @@ const PasswordForm = Form.create()(
     }
   }
 );
-
 class Elections extends Component {
   constructor(props) {
     super(props);
@@ -149,6 +148,7 @@ class Elections extends Component {
         return <li style={{ color: '#ff0000' }} key={election.name}><strong>{election.name}</strong></li>
       }
     });
+
     if (unselectedElections.length > 0) {
       electionsList = electionsList.concat(unselectedElections);
     }
@@ -174,15 +174,35 @@ class Elections extends Component {
   vote = (password) => {
     this.props.controlledCountdown(2);
     this.setState({ visible: false, bButtonVote: true, loadingVote: true });
-    voterService.vote(this.state.electoralEventPublickey, this.state.elections, password)
+
+    let candidates = [];
+    for (const election of this.state.elections) {
+      if (election.hasOwnProperty('selectedCandidate')) {
+        const electionId = election.id;
+        const typeCandidate = election.typeCandidate;
+        const selectedCandidate = election.selectedCandidate;
+        if (typeCandidate === TypeCandidate.uninominal) {
+          selectedCandidate['electionId'] = electionId;
+          candidates.push(selectedCandidate);
+        }
+        else if (typeCandidate === TypeCandidate.list) {
+          candidates = candidates.concat(selectedCandidate.map(candidate => { candidate['electionId'] = electionId; return candidate }));
+        }
+      }
+    }
+
+    voterService.vote(this.state.electoralEventPublickey, candidates, password)
       .then(response => {
         this.props.history.push(pathRoutes.VOTESUCCESS.replace(':electoralEventPublickey', this.state.electoralEventPublickey));
       })
       .catch(error => {
-        console.log('error :', error);
+        console.log('error', error)
+        notification['error']({
+          message: 'Error',
+          description: error,
+        });
         this.props.controlledCountdown(1);
         this.setState({ bButtonVote: false, loadingVote: false });
-        message.success('error');
       })
   }
 
@@ -210,64 +230,62 @@ class Elections extends Component {
       <div>
         {this.state.loadingVote && (
           <Spinner>
-            <p>Esto puede tomar un rato...</p>
+            <div class="text-center" style={{ paddingTop: '10px' }}>
+              <span>Por favor espere,</span>
+              <br />
+              <span>la transmisión de votos</span>
+              <br />
+              <span>puede durar unos minutos...</span>
+            </div>
           </Spinner>
         )}
 
         {!this.state.loadingVote && (
-          <Row>
-            <Col
-              xs={{ span: 22, offset: 1 }}
-              sm={{ span: 22, offset: 1 }}
-              md={{ span: 22, offset: 1 }}
-              lg={{ span: 23, offset: 1 }}
-              xl={{ span: 23, offset: 1 }}
-            >
-              {!this.state.showElection && (
-                <div>
-                  <h3>Escoja la elección en la que desea participar</h3>
-                  <List
-                    grid={{ gutter: 15, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 5 }}
-                    dataSource={this.state.elections}
-                    renderItem={(election) => (
-                      <List.Item key={election.id}>
-                        <Card
-                          cover={this.highlightImageSelectedCandidate(election)}
-                          actions={[<Button type='primary' style={{ borderRadius: '0px', height: '100%' }} block onClick={() => { this.showSelectedElection(election) }}>{this.textButtonSelectCandidate(election)}</Button>]}
-                        >
-                          <Meta
-                            style={{ textAlign: 'center' }}
-                            title={election.name}
-                          />
-                        </Card>
-                      </List.Item>
-                    )}
-                  />
-                  <br />
-                  <div className='text-center'>
-                    <Button
-                      type='primary'
-                      size='large'
-                      onClick={this.confirmVote}
-                      disabled={this.state.bButtonVote}
-                    >
-                      VOTAR
+          <div>
+            {!this.state.showElection && (
+              <div>
+                <h3>Escoja la elección en la que desea participar</h3>
+                <List
+                  grid={{ gutter: 15, xs: 1, sm: 1, md: 2, lg: 4, xl: 4, xxl: 4 }}
+                  dataSource={this.state.elections}
+                  renderItem={(election) => (
+                    <List.Item key={election.id}>
+                      <Card
+                        cover={this.highlightImageSelectedCandidate(election)}
+                        actions={[<Button type='primary' style={{ borderRadius: '0px', height: '100%' }} block onClick={() => { this.showSelectedElection(election) }}>{this.textButtonSelectCandidate(election)}</Button>]}
+                      >
+                        <Meta
+                          style={{ textAlign: 'center' }}
+                          title={election.name}
+                        />
+                      </Card>
+                    </List.Item>
+                  )}
+                />
+                <br />
+                <div className='text-center'>
+                  <Button
+                    type='primary'
+                    size='large'
+                    onClick={this.confirmVote}
+                    disabled={this.state.bButtonVote}
+                  >
+                    VOTAR
                 </Button>
-                  </div>
                 </div>
-              )}
+              </div>
+            )}
 
-              {this.state.showElection && (
-                <div>
-                  <Election
-                    election={this.state.electionSelected}
-                    deselectElection={this.deselectElection}
-                    updateElection={this.updateElection}
-                  />
-                </div>
-              )}
-            </Col>
-          </Row>
+            {this.state.showElection && (
+              <div>
+                <Election
+                  election={this.state.electionSelected}
+                  deselectElection={this.deselectElection}
+                  updateElection={this.updateElection}
+                />
+              </div>
+            )}
+          </div>
         )}
         <PasswordForm
           wrappedComponentRef={this.saveFormRef}

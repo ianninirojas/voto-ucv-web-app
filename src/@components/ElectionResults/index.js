@@ -60,48 +60,38 @@ class ElectionResults extends Component {
 	render() {
 		return (
 			<div>
-				<Row>
-					<Col
-						xs={{ span: 22, offset: 1 }}
-						sm={{ span: 22, offset: 1 }}
-						md={{ span: 22, offset: 1 }}
-						lg={{ span: 23, offset: 1 }}
-						xl={{ span: 23, offset: 1 }}
-					>
-						{!this.state.showElection && (
-							<div>
-								<h3>Escoja la elección que desea ver resultados</h3>
-								<List
-									grid={{ gutter: 15, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 5 }}
-									dataSource={this.state.elections}
-									renderItem={(election) => (
-										<List.Item key={election.id}>
-											<Card
-												cover={this.coverImageElection(election)}
-												actions={[<Button type='primary' style={{ borderRadius: '0px', height: '100%' }} block onClick={() => { this.showSelectedElection(election) }}>RESULTADOS</Button>]}
-											>
-												<Meta
-													style={{ textAlign: 'center' }}
-													title={election.name}
-												/>
-											</Card>
-										</List.Item>
-									)}
-								/>
-							</div>
-						)}
+				{!this.state.showElection && (
+					<div>
+						<h3>Escoja la elección que desea ver resultados</h3>
+						<List
+							grid={{ gutter: 15, xs: 1, sm: 1, md: 2, lg: 4, xl: 4, xxl: 4 }}
+							dataSource={this.state.elections}
+							renderItem={(election) => (
+								<List.Item key={election.id}>
+									<Card
+										cover={this.coverImageElection(election)}
+										actions={[<Button type='primary' style={{ borderRadius: '0px', height: '100%' }} block onClick={() => { this.showSelectedElection(election) }}>RESULTADOS</Button>]}
+									>
+										<Meta
+											style={{ textAlign: 'center' }}
+											title={election.name}
+										/>
+									</Card>
+								</List.Item>
+							)}
+						/>
+					</div>
+				)}
 
-						{this.state.showElection && (
-							<div>
-								<ElectionResult
-									election={this.state.electionSelected}
-									electoralEventPublickey={this.state.electoralEventPublickey}
-									deselectElection={this.deselectElection}
-								/>
-							</div>
-						)}
-					</Col>
-				</Row>
+				{this.state.showElection && (
+					<div>
+						<ElectionResult
+							election={this.state.electionSelected}
+							electoralEventPublickey={this.state.electoralEventPublickey}
+							deselectElection={this.deselectElection}
+						/>
+					</div>
+				)}
 			</div >
 		);
 	}

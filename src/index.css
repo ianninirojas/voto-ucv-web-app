@@ -40,3 +40,17 @@ code {
 .all-height {
   height: 100% !important;
 }
+
+a .anticon:hover {
+  color: #00a000 !important
+}
+
+.container {
+  padding: 0px 15px !important;
+}
+
+@media only screen and (min-width: 600px) {
+  .container {
+    padding: 0px 60px !important;
+  }
+}

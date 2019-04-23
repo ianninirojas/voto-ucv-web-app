@@ -1,0 +1,19 @@
+.bg {
+  background: linear-gradient(-135deg, #083c4a, #096dd9);
+}
+
+.logo {
+  text-align: center;
+  padding-top: 70px;
+}
+
+.logo > img {
+  width: 150px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 40px; 
+}
