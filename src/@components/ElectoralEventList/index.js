@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 
 import {
   List,
-  Skeleton,
-  Button,
-  Avatar,
   Icon,
   Tooltip
 } from 'antd';
