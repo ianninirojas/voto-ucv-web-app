@@ -64,9 +64,9 @@ const refreshToken = (token) => {
 
 const getTypeCode = () => {
   if (currentVoterSubject.value)
-    return jwt.decode(currentVoterSubject.value).typeCode;
-  else
-    return '';
+    if (jwt.decode(currentVoterSubject.value))
+      return jwt.decode(currentVoterSubject.value).typeCode;
+  return '';
 }
 
 export const voterService = {
