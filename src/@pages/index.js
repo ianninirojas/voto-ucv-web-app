@@ -13,3 +13,5 @@ export * from './VoteSuccess'
 export * from './ElectoralEvents'
 
 export * from './Result'
+
+export * from './Elector'

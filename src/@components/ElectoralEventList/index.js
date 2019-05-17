@@ -45,6 +45,21 @@ class ElectoralEventList extends Component {
       })
   }
 
+  statusElectoralEvent = (electoralEvent) => {
+    if(electoralEvent.active) {
+      return (
+      <Tooltip placement="top" title="Activo">
+        <Icon type='check' style={{ fontSize: '28px', color: '#00b600' }} />
+      </Tooltip>
+    )
+  }
+  return (
+    <Tooltip placement="top" title="Finalizado">
+    <Icon type='stop' style={{ fontSize: '28px', color: '#ff0000' }} />
+  </Tooltip>
+  )
+  }
+
   render() {
     return (
       <div>
@@ -58,20 +73,21 @@ class ElectoralEventList extends Component {
             </div>
             <br />
             <List
+            style={{paddingBottom: '30px'}}
               itemLayout="horizontal"
               dataSource={this.state.electoralEvents}
               renderItem={electoralEvent => (
                 <List.Item key={electoralEvent.publickey}
                   actions={[
-                    <Tooltip placement="top" title="Activo">
-                      <Icon type='check' style={{ fontSize: '28px', color: electoralEvent.finished ? ('#ff0000') : (electoralEvent.active ? '#00b600' : '#000000') }} />
-                    </Tooltip>,
-                    <Tooltip placement="top" title="Finalizado">
-                      <Icon type='stop' style={{ fontSize: '28px', color: electoralEvent.finished ? '#ff0000' : '#f5f5f5' }} />
+                    this.statusElectoralEvent(electoralEvent),
+                    <Tooltip placement="top" title="Registro Electoral">
+                      <Link to={pathRoutes.ELECTORS.replace(':electoralEventPublickey', electoralEvent.publickey)}>
+                        <Icon type='team' style={{ fontSize: '28px', color: '#ffffff' }} />
+                      </Link>
                     </Tooltip>,
                     <Tooltip placement="top" title="Resultados">
                       <Link to={pathRoutes.RESULT.replace(':electoralEventPublickey', electoralEvent.publickey)}>
-                        <Icon type='bar-chart' style={{ fontSize: '28px', color: '#00b600' }} />
+                        <Icon type='bar-chart' style={{ fontSize: '28px', color: '#ffffff' }} />
                       </Link>
                     </Tooltip>
                   ]}>

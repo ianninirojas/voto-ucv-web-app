@@ -17,7 +17,16 @@ const getAll = () => {
   return fetch(`${env.apiUrl}/electoral-event`, requestOptions).then(handleResponse);
 }
 
+const getElectoralRegister = (electoralEventPublickey) => {
+  const requestOptions = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  };
+  return fetch(`${env.apiUrl}/electoral-event/${electoralEventPublickey}/electoral-register`, requestOptions).then(handleResponse);
+}
+
 export const electoralEventService = {
   get,
-  getAll
+  getAll,
+  getElectoralRegister
 }

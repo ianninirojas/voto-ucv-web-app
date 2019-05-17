@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { ElectoralEventList } from '../../@components/ElectoralEventList';
+import { ElectoralEventList } from '../../@components';
 class ElectoralEvents extends Component {
 
   render() {

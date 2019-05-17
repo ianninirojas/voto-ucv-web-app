@@ -1,6 +1,7 @@
 export const pathRoutes = {
   CHECKTOKEN: '/eventos-electorales/:electoralEventPublickey/verificar-token/:token',
   ELECTORALEVENTS: '/eventos-electorales',
+  ELECTORS: '/eventos-electorales/:electoralEventPublickey/registro-electoral',
   AUTH: '/eventos-electorales/:electoralEventPublickey/autenticacion',
   ACCESS: '/eventos-electorales/:electoralEventPublickey/acceso',
   LOGIN: '/eventos-electorales/:electoralEventPublickey/login',

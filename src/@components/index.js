@@ -32,6 +32,10 @@ export * from './CandidateUninominalResult';
 
 export * from './Spinner';
 
+export * from './ElectoralEventList';
+
+export * from './ElectorList';
+
 // LAYOUT
 export * from './Header'
 export * from './Content'

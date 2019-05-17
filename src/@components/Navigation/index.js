@@ -13,6 +13,7 @@ import {
   Timeout,
   ElectoralEvents,
   VoteSuccess,
+  Electors
 } from '../../@pages';
 
 import {
@@ -44,6 +45,7 @@ class Navigation extends Component {
           <Switch>
             <Route path={pathRoutes.CHECKTOKEN} component={CheckToken} exact />
             <Route path={pathRoutes.ELECTORALEVENTS} component={DefaultLayout(ElectoralEvents)} exact />
+            <Route path={pathRoutes.ELECTORS} component={Electors} exact />
             <Route path={pathRoutes.RESULT} component={Result} exact />
             <PrivateRoute path={pathRoutes.AUTH} codeType='auth' component={DefaultLayout(Auth)} exact />
             <PrivateRoute path={pathRoutes.ACCESS} codeType='access' component={DefaultLayout(Access)} exact />
