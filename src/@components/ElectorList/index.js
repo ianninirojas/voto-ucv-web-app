@@ -15,6 +15,9 @@ import {
   Divider,
 } from 'antd';
 
+import {
+  Spinner
+} from '../../@components';
 
 import {
   facultyService,
@@ -27,7 +30,9 @@ class ElectorList extends Component {
     super(props);
     this.state = {
       searchText: '',
-      loading: false,
+      loadingElectors: false,
+      loadingFaculties: false,
+      lodingElectoralEvent: false,
       electoralEventPublickey: this.props.match.params.electoralEventPublickey,
       electoralEvent: '',
       electors: [],
@@ -66,13 +71,16 @@ class ElectorList extends Component {
   }
 
   getElectoralEvent = () => {
+    this.setState({ lodingElectoralEvent: true })
     electoralEventService.get(this.state.electoralEventPublickey)
       .then(electoralEvent => {
         this.setState({ electoralEvent })
+        this.setState({ lodingElectoralEvent: false })
       })
   }
 
   getFaculties = () => {
+    this.setState({ loadingFaculties: true })
     return new Promise((resolve, reject) => {
       facultyService.getAll()
         .then(async response => {
@@ -83,24 +91,33 @@ class ElectorList extends Component {
             faculty['schools'] = faculty['schools'].map(school => { school['key'] = `${faculty['key']}.${school.id}`; return school; })
             faculties.push(faculty);
           }
-          resolve(this.setState({ faculties }))
+          resolve(this.setState({
+            faculties,
+            loadingFaculties: false
+          }))
         })
         .catch(error => {
-          console.log('error', error)
+          console.log('error', error);
+          this.setState({ loadingFaculties: false })
         })
     })
   }
 
   getElectoralRegister = () => {
+    this.setState({ loadingElectors: true })
     return new Promise((resolve, reject) => {
       electoralEventService.getElectoralRegister(this.state.electoralEventPublickey)
         .then(response => {
           response = response.map(elector => { elector['elector'] = `V-${elector.ci} ${elector.apellido1} ${elector.inicialApellido2} ${elector.nombre1} ${elector.inicialNombre2}`; return elector })
-          resolve(this.setState({ electors: response }))
+          resolve(this.setState({
+            electors: response,
+            loadingElectors: false
+          }))
         })
-        .catch(error =>
+        .catch(error => {
           console.log('error', error)
-        )
+          this.setState({ loadingElectors: false })
+        })
     })
   }
 
@@ -236,7 +253,7 @@ class ElectorList extends Component {
       </div>
     ),
     filterIcon: filtered => (
-      <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined, fontSize: '20px', width:'60px' }} />
+      <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined, fontSize: '20px', width: '60px' }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]
@@ -276,80 +293,88 @@ class ElectorList extends Component {
 
     return (
       <div style={{ padding: '50px 50px' }}>
-        <Card>
-          <Form.Item style={{ marginBottom: '0px' }}>
-            <h1 ><span style={{ fontWeight: 400 }} >{this.state.electoralEvent.name}</span></h1>
-          </Form.Item>
-          <Row gutter={10}>
-            {/* TYPE ELECTOR */}
-            <Col
-              xs={24}
-              sm={24}
-              md={8}
-              lg={8}
-              xl={8}
-            >
-              <Form.Item
-                label={(
-                  <span>Tipo Elector</span>
-                )}
-              >
-                <Select style={{ width: '100%' }} value={this.state.typeElectorSelected} onChange={this.handleChangeTypeElector} >
-                  <Select.Option key='all'>Todos</Select.Option>
-                  <Select.Option key='estudiante'>Estudiante</Select.Option>
-                  <Select.Option key='egresado'>Egresado</Select.Option>
-                  <Select.Option key='profesor'>Profesor</Select.Option>
-                </Select>
-              </Form.Item>
-            </Col>
-            {/* TYPE ELECTOR */}
 
-            {/* FACULTY */}
-            <Col
-              xs={24}
-              sm={24}
-              md={8}
-              lg={8}
-              xl={8}
-            >
-              <Form.Item
-                label={(
-                  <span>Facultad</span>
-                )}
-              >
-                <Select style={{ width: '100%' }} value={this.state.facultySelected} onChange={this.handleChangeFaculty}>
-                  <Select.Option key='all'>Todas</Select.Option>
-                  {this.renderFacultiesOptions()}
-                </Select>
+        {(this.state.loadingElectors || this.state.lodingElectoralEvent || this.state.loadingFaculties) && (
+          <Spinner color='black' />
+        )}
+        {(!this.state.loadingElectors && !this.state.lodingElectoralEvent && !this.state.loadingFaculties) && (
+          <div>
+            <Card>
+              <Form.Item style={{ marginBottom: '0px' }}>
+                <h1 ><span style={{ fontWeight: 400 }} >{this.state.electoralEvent.name}</span></h1>
               </Form.Item>
-            </Col>
-            {/* FACULTY */}
-
-            {/* SCHOOL */}
-            {this.state.facultySelected !== 'all' && (
-              <Col
-                xs={24}
-                sm={24}
-                md={8}
-                lg={8}
-                xl={8}
-              >
-                <Form.Item
-                  label={(
-                    <span>Escuela</span>
-                  )}
+              <Row gutter={10}>
+                {/* TYPE ELECTOR */}
+                <Col
+                  xs={24}
+                  sm={24}
+                  md={8}
+                  lg={8}
+                  xl={8}
                 >
-                  <Select style={{ width: '100%' }} value={this.state.schoolSelected} onChange={this.handleChangeSchool}>
-                    <Select.Option key='all'>Todas</Select.Option>
-                    {this.renderSchoolsOptions()}
-                  </Select>
-                </Form.Item>
-              </Col>
-            )}
-            {/* SCHOOL */}
-          </Row>
-        </Card>
-        <RenderGroupElectors />
+                  <Form.Item
+                    label={(
+                      <span>Tipo Elector</span>
+                    )}
+                  >
+                    <Select style={{ width: '100%' }} value={this.state.typeElectorSelected} onChange={this.handleChangeTypeElector} >
+                      <Select.Option key='all'>Todos</Select.Option>
+                      <Select.Option key='estudiante'>Estudiante</Select.Option>
+                      <Select.Option key='egresado'>Egresado</Select.Option>
+                      <Select.Option key='profesor'>Profesor</Select.Option>
+                    </Select>
+                  </Form.Item>
+                </Col>
+                {/* TYPE ELECTOR */}
+
+                {/* FACULTY */}
+                <Col
+                  xs={24}
+                  sm={24}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                >
+                  <Form.Item
+                    label={(
+                      <span>Facultad</span>
+                    )}
+                  >
+                    <Select style={{ width: '100%' }} value={this.state.facultySelected} onChange={this.handleChangeFaculty}>
+                      <Select.Option key='all'>Todas</Select.Option>
+                      {this.renderFacultiesOptions()}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                {/* FACULTY */}
+
+                {/* SCHOOL */}
+                {this.state.facultySelected !== 'all' && (
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                  >
+                    <Form.Item
+                      label={(
+                        <span>Escuela</span>
+                      )}
+                    >
+                      <Select style={{ width: '100%' }} value={this.state.schoolSelected} onChange={this.handleChangeSchool}>
+                        <Select.Option key='all'>Todas</Select.Option>
+                        {this.renderSchoolsOptions()}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                )}
+                {/* SCHOOL */}
+              </Row>
+            </Card>
+            <RenderGroupElectors />
+          </div>
+        )}
       </div >
     );
   }

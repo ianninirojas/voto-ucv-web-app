@@ -37,8 +37,8 @@ code {
   margin: 0px !important
 }
 
-.all-height {
-  height: 100% !important;
+.wrapper-default-layout {
+  min-height: 100% !important;
 }
 
 a .anticon:hover {

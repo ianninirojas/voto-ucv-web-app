@@ -46,18 +46,18 @@ class ElectoralEventList extends Component {
   }
 
   statusElectoralEvent = (electoralEvent) => {
-    if(electoralEvent.active) {
+    if (electoralEvent.active) {
       return (
-      <Tooltip placement="top" title="Activo">
-        <Icon type='check' style={{ fontSize: '28px', color: '#00b600' }} />
+        <Tooltip placement="top" title="Activo">
+          <Icon type='check' style={{ fontSize: '28px', color: '#00b600' }} />
+        </Tooltip>
+      )
+    }
+    return (
+      <Tooltip placement="top" title="Finalizado">
+        <Icon type='stop' style={{ fontSize: '28px', color: '#ff0000' }} />
       </Tooltip>
     )
-  }
-  return (
-    <Tooltip placement="top" title="Finalizado">
-    <Icon type='stop' style={{ fontSize: '28px', color: '#ff0000' }} />
-  </Tooltip>
-  )
   }
 
   render() {
@@ -73,11 +73,13 @@ class ElectoralEventList extends Component {
             </div>
             <br />
             <List
-            style={{paddingBottom: '30px'}}
+              style={{ paddingBottom: '30px' }}
               itemLayout="horizontal"
               dataSource={this.state.electoralEvents}
               renderItem={electoralEvent => (
-                <List.Item key={electoralEvent.publickey}
+                <List.Item
+                  key={electoralEvent.publickey}
+                  style={{ padding: '25px 0px' }}
                   actions={[
                     this.statusElectoralEvent(electoralEvent),
                     <Tooltip placement="top" title="Registro Electoral">
