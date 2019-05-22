@@ -176,6 +176,7 @@ class Elections extends Component {
     this.setState({ visible: false, bButtonVote: true, loadingVote: true });
 
     let candidates = [];
+    let elections = []
     for (const election of this.state.elections) {
       if (election.hasOwnProperty('selectedCandidate')) {
         const electionId = election.id;
@@ -188,10 +189,14 @@ class Elections extends Component {
         else if (typeCandidate === TypeCandidate.list) {
           candidates = candidates.concat(selectedCandidate.map(candidate => { candidate['electionId'] = electionId; return candidate }));
         }
+        elections.push({
+          id: election.id,
+          candidates
+        })
       }
     }
 
-    voterService.vote(this.state.electoralEventPublickey, candidates, password)
+    voterService.vote(this.state.electoralEventPublickey, elections, password)
       .then(response => {
         this.props.history.push(pathRoutes.VOTESUCCESS.replace(':electoralEventPublickey', this.state.electoralEventPublickey));
       })
@@ -230,7 +235,7 @@ class Elections extends Component {
       <div>
         {this.state.loadingVote && (
           <Spinner>
-            <div class="text-center" style={{ paddingTop: '10px' }}>
+            <div className="text-center" style={{ paddingTop: '10px' }}>
               <span>Por favor espere,</span>
               <br />
               <span>la transmisión de votos</span>

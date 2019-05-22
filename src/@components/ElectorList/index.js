@@ -108,7 +108,7 @@ class ElectorList extends Component {
     return new Promise((resolve, reject) => {
       electoralEventService.getElectoralRegister(this.state.electoralEventPublickey)
         .then(response => {
-          response = response.map(elector => { elector['elector'] = `V-${elector.ci} ${elector.apellido1} ${elector.inicialApellido2} ${elector.nombre1} ${elector.inicialNombre2}`; return elector })
+          response = response.map(elector => { elector['elector'] = `V-${elector.identityDocument} ${elector.apellido1} ${elector.inicialApellido2} ${elector.nombre1} ${elector.inicialNombre2}`; return elector })
           resolve(this.setState({
             electors: response,
             loadingElectors: false

@@ -43,11 +43,11 @@ const login = (electoralEventPublickey, password) => {
     .then(handleResponse);
 }
 
-const vote = (electoralEventPublickey, candidates, password) => {
+const vote = (electoralEventPublickey, elections, password) => {
   const requestOptions = {
     method: 'POST',
     headers: { Authorization: authHeader(), 'Content-Type': 'application/json' },
-    body: JSON.stringify({ candidates, password })
+    body: JSON.stringify({ elections, password })
   };
   return fetch(`${env.apiUrl}/electoral-event/${electoralEventPublickey}/voter/vote`, requestOptions).then(handleResponse);
 }

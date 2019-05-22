@@ -24,15 +24,42 @@ class Result extends Component {
       electoralEvent: {
         name: ''
       },
+      electionIds: {},
       elections: [],
       loadingElectoralEvent: true,
       loadingElections: true
     }
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
+    await this.getElectoralRegister();
     this.getElectoralEvent();
     this.getElections();
+  }
+
+  getElectoralRegister = () => {
+    this.setState({ loadingElectors: true })
+    return new Promise((resolve, reject) => {
+      electoralEventService.getElectoralRegister(this.state.electoralEventPublickey)
+        .then(response => {
+          response = response.map(elector => elector.electionsIds.split(','))
+          response = [].concat.apply([], response);
+          let electionIds = {};
+          for (const electionId of response) {
+            if (!electionIds[electionId])
+              electionIds[electionId] = 0;
+            electionIds[electionId]++;
+          }
+          resolve(this.setState({
+            electionIds,
+            loadingElectors: false
+          }))
+        })
+        .catch(error => {
+          console.log('error', error)
+          this.setState({ loadingElectors: false })
+        })
+    })
   }
 
   getElectoralEvent = () => {
@@ -48,6 +75,11 @@ class Result extends Component {
   getElections = () => {
     electionService.getAll(this.state.electoralEventPublickey)
       .then(elections => {
+        elections = elections.map(election => {
+          election['numberElectoralRegister'] = this.state.electionIds[election.id];
+          return election;
+        })
+        console.log('elections', elections);
         this.setState({ elections, loadingElections: false })
       })
       .catch(error => {

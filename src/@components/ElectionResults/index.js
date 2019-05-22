@@ -31,6 +31,7 @@ class ElectionResults extends Component {
 			bElectoralEventActive: this.props.electoralEvent.active,
 			visible: false
 		}
+		console.log(this.state.elections);
 	}
 
 	showSelectedElection = (electionSelected) => {

@@ -21,16 +21,11 @@ class VoteSuccess extends Component {
 	render() {
 		return (
 			<div>
-				<div className='text-center'>
+				<div className='text-center' style={{ paddingTop: '20px' }}>
 					<Progress type='circle' width='110px' percent={100} format={() => <Icon type='check' style={{ fontSize: '3em' }} />} status='success' />
 				</div>
-				<div className='text-center' style={{ paddingTop: '30px', paddingRight: '50px', paddingLeft: '50px' }}>
+				<div className='text-center' style={{ paddingTop: '40px', paddingRight: '50px', paddingLeft: '50px' }}>
 					<h2 style={{ color: "#ffffff" }}>Su voto ha sido transmitido con éxito</h2>
-				</div>
-				<div className='text-center' style={{ paddingTop: '30px' }}>
-					<Link to={pathRoutes.RESULT.replace(':electoralEventPublickey', this.props.match.params.electoralEventPublickey)}>
-						<Button type='primary' size='large'>RESULTADOS</Button>
-					</Link>
 				</div>
 			</div >
 		);

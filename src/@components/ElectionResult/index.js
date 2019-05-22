@@ -13,7 +13,7 @@ class ElectionResult extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      election: [],
+      election: {},
       loadingResult: true
     }
   }
@@ -26,6 +26,7 @@ class ElectionResult extends Component {
     electionService.getResult(this.props.electoralEventPublickey, this.props.election)
       .then(election => {
         this.setState({ election, loadingResult: false });
+        this.numberVoters();
       })
       .catch(error => {
         console.log('error :', error);
@@ -35,6 +36,38 @@ class ElectionResult extends Component {
 
   deselectElection = () => {
     this.props.deselectElection();
+  }
+
+  numberVoters = () => {
+    let election = { ...this.state.election };
+    if (election.typeCandidate === TypeCandidate.uninominal) {
+      election['numberVoters'] = election.candidates.reduce((a, b) => a.votes + b.votes);
+    }
+    else if (election.typeCandidate === TypeCandidate.list) {
+      let candidates = [...this.state.election.candidates];
+      let candidatesByPosition = {};
+      for (const candidate of candidates) {
+        const position = candidate.position;
+        if (!candidatesByPosition[position]) {
+          candidatesByPosition[position] = [];
+        }
+        candidatesByPosition[position].push(candidate)
+      }
+
+      for (const position in candidatesByPosition) {
+        const candidates = candidatesByPosition[position];
+        candidatesByPosition[position]['votes'] = candidates.reduce((a, b) => a.votes + b.votes);
+      }
+      election['numberVoters'] = 0;
+      for (const position in candidatesByPosition) {
+        const candidates = candidatesByPosition[position];
+        candidatesByPosition[position]['votes'] = candidates.reduce((a, b) => a.votes + b.votes);
+        if (candidatesByPosition[position]['votes'] > election['numberVoters']) {
+          election['numberVoters'] = candidatesByPosition[position]['votes']
+        }
+      }
+    }
+    this.setState({ election });
   }
 
   CandidateResult = () => {
@@ -63,6 +96,8 @@ class ElectionResult extends Component {
         {!this.state.loadingResult && (
           <Row>
             <h3> <span style={{ color: '#ff0000' }}> Resultados</span></h3>
+            <h3><strong>Registro Electoral:</strong> {this.state.election.numberElectoralRegister}</h3>
+            <h3><strong>Electores Participantes:</strong> {this.state.election.numberVoters}</h3>
             <Col xs={{ span: 21 }} sm={{ span: 12 }} md={{ span: 12 }} lg={{ span: 12 }} xl={{ span: 12 }}>
               <h3><strong>Elección:</strong> {election.name}</h3>
             </Col>
